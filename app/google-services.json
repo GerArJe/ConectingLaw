@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1005284101801",
+    "firebase_url": "https://conectinglaw.firebaseio.com",
+    "project_id": "conectinglaw",
+    "storage_bucket": "conectinglaw.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005284101801:android:611ca0615596c217af23b8",
+        "android_client_info": {
+          "package_name": "com.example.conectinglaw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1005284101801-sc0fs91uacrdautk1tiuv3mr9vv2cmnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMHnn39zs5p3YP7g_RHnDow_Suv66FA9Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1005284101801-sc0fs91uacrdautk1tiuv3mr9vv2cmnp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

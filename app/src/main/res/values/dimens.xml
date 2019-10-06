@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="edittext_textsize_login">22sp</dimen>
+    <dimen name="margin_loginView">20dp</dimen>
+    <dimen name="textsize_donthaveaccount">16sp</dimen>
+</resources>
