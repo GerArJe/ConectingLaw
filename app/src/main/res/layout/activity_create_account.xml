@@ -105,14 +105,16 @@
                 android:layout_margin="15dp"
                 android:duplicateParentState="false"
                 android:text="@string/cb_personaNatural"
-                android:textColor="@color/primary_text" />
+                android:textColor="@color/primary_text"
+                android:onClick="setCheckboxPersonaNatural"/>
 
             <CheckBox
                 android:id="@+id/cb_PJ"
                 android:layout_width="374dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="@string/personaJuridica" />
+                android:text="@string/personaJuridica"
+                android:onClick="setCheckboxPersonaJuridica"/>
 
 
             <LinearLayout

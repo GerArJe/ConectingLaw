@@ -66,23 +66,18 @@ public class CreateAccountActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(),
                     "Has sido registrado como Persona Jurídica", Toast.LENGTH_LONG).show();
         }
-
-        else if(cbPJ.isActivated()&&cbPN.isActivated())
-        {
-            Toast.makeText(getBaseContext(),
-                    "Seleccione solo un tipo de usuario", Toast.LENGTH_LONG).show();
-        }
-
     }
 
-    public void verificarCb(){
-
-        if (cbPN.isActivated()) {}
-        else if (cbPJ.isActivated()) {}
-        else if(cbPJ.isActivated() && cbPN.isActivated()) {
-            Toast.makeText(this, "Solo escoger uno", Toast.LENGTH_LONG).show();
+    public void setCheckboxPersonaJuridica(View view){
+        if (cbPJ.isChecked()){
+            cbPN.setChecked(false);
         }
+    }
 
+    public void setCheckboxPersonaNatural(View view){
+        if (cbPN.isChecked()){
+            cbPJ.setChecked(false);
+        }
     }
 
     public void asociarElement () {
@@ -95,6 +90,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         edtCedula = findViewById(R.id.edt_Cedula);
     }
 
+    //inicializar instancia de Firebase
     private void initialize() {
         firebaseAuth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -111,10 +107,12 @@ public class CreateAccountActivity extends AppCompatActivity {
         };
     }
 
+    //crear cuenta
     private void createAccount(String email, String password){
         firebaseService.createAccount(email, password, this, firebaseAuth);
     }
 
+    //volver al login
     public void backToLogin(View view){
         finish();
     }

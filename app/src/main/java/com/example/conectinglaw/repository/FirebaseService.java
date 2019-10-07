@@ -22,6 +22,7 @@ public class FirebaseService {
 
     private String TAG = "FirebaseService";
 
+    //iniciar sesion
     public void signIn(String email, String password, final Activity activity, FirebaseAuth firebaseAuth){
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
             @Override
@@ -40,6 +41,7 @@ public class FirebaseService {
         });
     }
 
+    //crear cuenta
     public void createAccount(String email, String password, final Activity activity, FirebaseAuth firebaseAuth){
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
             @Override

@@ -54,11 +54,13 @@ public class LoginActivity extends AppCompatActivity {
         txtCreateAccount = findViewById(R.id.txt_createAccount);
     }
 
+    //ir a crear cuenta
     public void goCreateAccount(View view){
         Intent intent = new Intent(this, CreateAccountActivity.class);
         startActivity(intent);
     }
 
+    //inicializar instancia de Firebase
     private void initialize() {
         firebaseAuth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -75,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         };
     }
 
+    //iniciar sesion
     private void signIn(String email, String password){
         firebaseService.signIn(email, password, this, firebaseAuth);
     }
