@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.CreateLawyerAccountActivity">
+
+    <TextView
+        android:id="@+id/tv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/indigo_daisy"
+        android:text="@string/register"
+        android:textAlignment="center"
+        android:textColor="@color/primary_text"
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/tv_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="50dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/lawyer"
+        android:textColor="@color/secondary_text"
+        android:textSize="17sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/user_data_form"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lawyerType"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/primary_text"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:fontFamily="@font/roboto_regular"/>
+
+            <CheckBox
+                android:id="@+id/cb_penal"
+                android:layout_width="374dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:duplicateParentState="false"
+                android:text="@string/penal"
+                android:textColor="@color/primary_text"
+                android:fontFamily="@font/roboto_regular"
+                />
+
+            <CheckBox
+                android:id="@+id/cb_civil"
+                android:layout_width="374dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="@string/civil"
+                android:textColor="@color/primary_text"
+                android:fontFamily="@font/roboto_regular"
+                />
+
+            <CheckBox
+                android:id="@+id/cb_mercantil"
+                android:layout_width="374dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="@string/mercantil"
+                android:textColor="@color/primary_text"
+                android:fontFamily="@font/roboto_regular"
+                />
+
+            <include layout="@layout/buttons_form"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    >
+
+    <EditText
+        android:id="@+id/edt_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edt_custom"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="@string/your_name"
+        android:inputType="textPersonName"
+        android:padding="15dp"
+        android:textColor="@color/primary_text"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/edt_lastname"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edt_custom"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="@string/lastname"
+        android:inputType="textPersonName"
+        android:padding="15dp"
+        android:textColor="@color/primary_text"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/edt_email"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edt_custom"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:padding="15dp"
+        android:textColor="@color/primary_text"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/edt_password"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edt_custom"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:padding="15dp"
+        android:textColor="@color/primary_text"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/edt_telephoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edt_custom"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="@string/telephoneNumber"
+        android:inputType="phone"
+        android:padding="15dp"
+        android:textColor="@color/primary_text"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/edt_Cedula"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/edt_custom"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="@string/cedula"
+        android:inputType="number"
+        android:padding="15dp"
+        android:textColor="@color/primary_text"
+        android:textSize="15sp" />
+
+</LinearLayout>

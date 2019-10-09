@@ -9,14 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.conectinglaw.R;
 import com.example.conectinglaw.repository.FirebaseService;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -54,9 +50,15 @@ public class LoginActivity extends AppCompatActivity {
         txtCreateAccount = findViewById(R.id.txt_createAccount);
     }
 
-    //ir a crear cuenta
-    public void goCreateAccount(View view){
-        Intent intent = new Intent(this, CreateAccountActivity.class);
+    //ir a crear cuenta abogado
+    public void goCreateAccountLawyer(View view){
+        Intent intent = new Intent(this, CreateLawyerAccountActivity.class);
+        startActivity(intent);
+    }
+
+    //ir a crear cuenta cliente
+    public void goCreateAccountClient(View view){
+        Intent intent = new Intent(this, CreateClientAccountActivity.class);
         startActivity(intent);
     }
 

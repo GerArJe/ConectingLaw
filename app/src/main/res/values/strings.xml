@@ -3,15 +3,21 @@
     <string name="username">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="btn_login">Iniciar Sesión</string>
-    <string name="dont_have_account">¿No tienes cuenta?,</string>
-    <string name="create_here">crea una aquí</string>
+    <string name="register_as_a_lawyer">Registrarse como abogado</string>
+    <string name="register_as_a_client">Registrarse como cliente</string>
+    <string name="lawyer">Abogado</string>
+    <string name="client">Cliente</string>
 
     <string name="register">Registro</string>
     <string name="tag">GY</string>
-    <string name="your_name">Nombre</string>
+    <string name="your_name">Nombres</string>
     <string name="email">Correo</string>
     <string name="cedula">Cedula</string>
-    <string name="cb_personaNatural">Persona Natural</string>
-    <string name="personaJuridica">Persona Juridica</string>
+    <string name="penal">Penal</string>
+    <string name="civil">Civil</string>
+    <string name="mercantil">Mercantil</string>
     <string name="swipe_right_for_login">Volver</string>
+    <string name="lawyerType">Tipo de Abogado</string>
+    <string name="lastname">Apellidos</string>
+    <string name="telephoneNumber">Celular</string>
 </resources>

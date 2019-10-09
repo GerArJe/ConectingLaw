@@ -4,20 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.LoginActivity"
     android:background="@color/primary_dark"
-    android:orientation="vertical"
     android:gravity="center"
-    android:padding="@dimen/margin_loginView">
+    android:orientation="vertical"
+    android:padding="@dimen/margin_loginView"
+    tools:context=".view.LoginActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/indigo_daisy"
         android:text="@string/app_name"
         android:textColor="@color/txt_colorWhite"
-        android:textSize="90sp"
-        android:fontFamily="@font/indigo_daisy"
-        />
+        android:textSize="90sp" />
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -29,9 +28,8 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email"
             android:fontFamily="@font/roboto_regular"
-            />
+            android:hint="@string/email" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,9 +42,9 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password"
             android:fontFamily="@font/roboto_regular"
-            android:inputType="textPassword"/>
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,39 +52,37 @@
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_login"
-        android:fontFamily="@font/roboto_regular"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/btn_custom"
+        android:fontFamily="@font/roboto_regular"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"/>
+        android:paddingRight="20dp"
+        android:text="@string/btn_login" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/register_as_a_lawyer"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textsize_donthaveaccount"
+        android:textStyle="bold"
+        android:onClick="goCreateAccountLawyer"
+        />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dont_have_account"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="@dimen/textsize_donthaveaccount"
-            android:fontFamily="@font/roboto_regular"/>
+    <TextView
+        android:id="@+id/txt_createAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:onClick="goCreateAccountClient"
+        android:text="@string/register_as_a_client"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textsize_donthaveaccount"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"/>
 
-        <TextView
-            android:id="@+id/txt_createAccount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_here"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="@dimen/textsize_donthaveaccount"
-            android:fontFamily="@font/roboto_regular"
-            android:onClick="goCreateAccount"/>
-
-    </LinearLayout>
 
 </LinearLayout>

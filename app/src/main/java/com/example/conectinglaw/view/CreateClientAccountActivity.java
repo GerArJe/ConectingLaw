@@ -1,42 +1,42 @@
 package com.example.conectinglaw.view;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.conectinglaw.R;
+import com.example.conectinglaw.model.Lawyer;
+import com.example.conectinglaw.model.User;
 import com.example.conectinglaw.repository.FirebaseService;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class CreateAccountActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
-    private static final String TAG = "CreateAccountActivity";
+public class CreateClientAccountActivity extends AppCompatActivity {
+
+    private static final String TAG = "CreateAccountLawyer";
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseService firebaseService = new FirebaseService();
 
     public Button btnRegister;
-    public CheckBox cbPJ, cbPN;
-    public EditText edtNombre, edtCedula, edtEmail, edtPassword;
+    public CheckBox cbPenal, cbCivil, cbMercantil;
+    public EditText edtNombre, edtLastname, edtCedula, edtEmail, edtPassword, edtTelephoneNumber;
 
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_account);
+        setContentView(R.layout.activity_create_lawyer_account);
 
         asociarElement();
         initialize();
@@ -44,50 +44,29 @@ public class CreateAccountActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAccount(edtEmail.getText().toString(), edtPassword.getText().toString());
+                user = new User(edtNombre.getText().toString(),
+                        edtLastname.getText().toString(),
+                        edtEmail.getText().toString(),
+                        Integer.parseInt(edtCedula.getText().toString()),
+                        Integer.parseInt(edtTelephoneNumber.getText().toString()));
+                createAccount(edtEmail.getText().toString(),
+                        edtPassword.getText().toString(),
+                        user);
             }
         });
     }
 
-    //registro
-    public void registrar(View vista) {
-
-        if (cbPN.isActivated()) {
-            Intent i = new Intent(this, HomeClientActivity.class);
-            startActivity(i);
-            Toast.makeText(getBaseContext(),
-                    "Has sido registrado como persona Natural", Toast.LENGTH_LONG).show();
-        }
-
-        else if(cbPJ.isActivated())
-        {
-            Intent i = new Intent(this, HomeLawyerActivity.class);
-            startActivity(i);
-            Toast.makeText(getBaseContext(),
-                    "Has sido registrado como Persona Jurídica", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void setCheckboxPersonaJuridica(View view){
-        if (cbPJ.isChecked()){
-            cbPN.setChecked(false);
-        }
-    }
-
-    public void setCheckboxPersonaNatural(View view){
-        if (cbPN.isChecked()){
-            cbPJ.setChecked(false);
-        }
-    }
-
     public void asociarElement () {
-        btnRegister = findViewById(R.id.btn_register);
-        cbPJ = findViewById(R.id.cb_PJ);
-        cbPN = findViewById(R.id.cb_PN);
         edtNombre = findViewById(R.id.edt_name);
         edtPassword = findViewById(R.id.edt_password);
         edtEmail = findViewById(R.id.edt_email);
         edtCedula = findViewById(R.id.edt_Cedula);
+        edtLastname = findViewById(R.id.edt_lastname);
+        edtTelephoneNumber = findViewById(R.id.edt_telephoneNumber);
+        cbPenal = findViewById(R.id.cb_penal);
+        cbCivil = findViewById(R.id.cb_civil);
+        cbMercantil = findViewById(R.id.cb_mercantil);
+        btnRegister = findViewById(R.id.btn_register);
     }
 
     //inicializar instancia de Firebase
@@ -108,8 +87,14 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     //crear cuenta
-    private void createAccount(String email, String password){
-        firebaseService.createAccount(email, password, this, firebaseAuth);
+    private void createAccount(final String email, final String password, final User user){
+        firebaseService.createAccount(
+                email,
+                password,
+                CreateClientAccountActivity.this,
+                firebaseAuth,
+                user,
+                "client");
     }
 
     //volver al login
@@ -128,5 +113,4 @@ public class CreateAccountActivity extends AppCompatActivity {
         super.onStop();
         firebaseAuth.removeAuthStateListener(authStateListener);
     }
-
 }
