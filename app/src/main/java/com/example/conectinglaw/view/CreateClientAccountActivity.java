@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.example.conectinglaw.R;
 import com.example.conectinglaw.model.Lawyer;
@@ -30,20 +31,23 @@ public class CreateClientAccountActivity extends AppCompatActivity {
     public Button btnRegister;
     public CheckBox cbPenal, cbCivil, cbMercantil;
     public EditText edtNombre, edtLastname, edtCedula, edtEmail, edtPassword, edtTelephoneNumber;
+    ProgressBar progressBarRegister;
 
     private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_lawyer_account);
+        setContentView(R.layout.activity_create_client_account);
 
         asociarElement();
+        hideProgressBar();
         initialize();
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgressBar();
                 user = new User(edtNombre.getText().toString(),
                         edtLastname.getText().toString(),
                         edtEmail.getText().toString(),
@@ -67,6 +71,7 @@ public class CreateClientAccountActivity extends AppCompatActivity {
         cbCivil = findViewById(R.id.cb_civil);
         cbMercantil = findViewById(R.id.cb_mercantil);
         btnRegister = findViewById(R.id.btn_register);
+        progressBarRegister = findViewById(R.id.progressBar_register);
     }
 
     //inicializar instancia de Firebase
@@ -100,6 +105,16 @@ public class CreateClientAccountActivity extends AppCompatActivity {
     //volver al login
     public void backToLogin(View view){
         finish();
+    }
+
+    //mostar progressbar
+    public void showProgressBar(){
+        progressBarRegister.setVisibility(View.VISIBLE);
+    }
+
+    //ocultar progressbar
+    public void hideProgressBar() {
+        progressBarRegister.setVisibility(View.GONE);
     }
 
     @Override

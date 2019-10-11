@@ -7,6 +7,7 @@
     <string name="register_as_a_client">Registrarse como cliente</string>
     <string name="lawyer">Abogado</string>
     <string name="client">Cliente</string>
+    <string name="tab_profile">Yo</string>
 
     <string name="register">Registro</string>
     <string name="tag">GY</string>
@@ -20,4 +21,5 @@
     <string name="lawyerType">Tipo de Abogado</string>
     <string name="lastname">Apellidos</string>
     <string name="telephoneNumber">Celular</string>
+    <string name="tab_chat">Chat</string>
 </resources>

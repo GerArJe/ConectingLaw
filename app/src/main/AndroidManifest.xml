@@ -9,9 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.CreateClientAccountActivity"></activity>
-        <activity android:name=".view.HomeLawyerActivity" />
-        <activity android:name=".view.HomeClientActivity" />
+        <activity android:name=".view.fragment.ProfileClientFragmentActivity"></activity>
+        <activity android:name=".view.fragment.ChatFragmentActivity" />
+        <activity android:name=".view.fragment.ProfileLawyerFragmentActivity" />
+        <activity android:name=".view.ContainerActivity" />
+        <activity android:name=".view.CreateClientAccountActivity" />
         <activity android:name=".view.CreateLawyerAccountActivity" />
         <activity android:name=".view.LoginActivity">
             <intent-filter>
