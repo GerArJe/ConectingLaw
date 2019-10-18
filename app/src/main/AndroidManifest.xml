@@ -12,7 +12,8 @@
         <activity android:name=".view.fragment.ProfileClientFragmentActivity"></activity>
         <activity android:name=".view.fragment.ChatFragmentActivity" />
         <activity android:name=".view.fragment.ProfileLawyerFragmentActivity" />
-        <activity android:name=".view.ContainerActivity" />
+        <activity android:name=".view.ContainerActivity"
+            android:theme="@style/AppThemeActionBar"/>
         <activity android:name=".view.CreateClientAccountActivity" />
         <activity android:name=".view.CreateLawyerAccountActivity" />
         <activity android:name=".view.LoginActivity">

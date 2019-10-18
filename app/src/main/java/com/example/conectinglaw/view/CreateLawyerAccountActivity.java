@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.example.conectinglaw.R;
 import com.example.conectinglaw.model.Lawyer;
@@ -30,6 +31,7 @@ public class CreateLawyerAccountActivity extends AppCompatActivity {
     public Button btnRegister;
     public CheckBox cbPenal, cbCivil, cbMercantil;
     public EditText edtNombre, edtLastname, edtCedula, edtEmail, edtPassword, edtTelephoneNumber;
+    ProgressBar progressBarRegister;
 
     private Lawyer lawyer;
     private List<String> topicsWork = new ArrayList<>();
@@ -40,11 +42,13 @@ public class CreateLawyerAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_lawyer_account);
 
         asociarElement();
+        hideProgressBar();
         initialize();
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgressBar();
                 if (cbPenal.isChecked()){
                     topicsWork.add(cbPenal.getText().toString());
                 }
@@ -78,6 +82,7 @@ public class CreateLawyerAccountActivity extends AppCompatActivity {
         cbCivil = findViewById(R.id.cb_civil);
         cbMercantil = findViewById(R.id.cb_mercantil);
         btnRegister = findViewById(R.id.btn_register);
+        progressBarRegister = findViewById(R.id.progressBar_register);
     }
 
     //inicializar instancia de Firebase
@@ -111,6 +116,16 @@ public class CreateLawyerAccountActivity extends AppCompatActivity {
     //volver al login
     public void backToLogin(View view){
         finish();
+    }
+
+    //mostar progressbar
+    public void showProgressBar(){
+        progressBarRegister.setVisibility(View.VISIBLE);
+    }
+
+    //ocultar progressbar
+    public void hideProgressBar() {
+        progressBarRegister.setVisibility(View.GONE);
     }
 
     @Override

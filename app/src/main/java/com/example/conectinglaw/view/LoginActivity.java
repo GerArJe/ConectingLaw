@@ -3,11 +3,14 @@ package com.example.conectinglaw.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.conectinglaw.R;
@@ -26,11 +29,14 @@ public class LoginActivity extends AppCompatActivity {
     TextInputEditText username, password;
     Button btnLogin;
     TextView txtCreateAccount;
+    ProgressBar progressbarLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //hideProgressBar();
 
         asociateElements();
         initialize();
@@ -38,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgressBar();
                 signIn(username.getText().toString(), password.getText().toString());
             }
         });
@@ -48,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         btnLogin = findViewById(R.id.btn_login);
         txtCreateAccount = findViewById(R.id.txt_createAccount);
+        progressbarLogin = findViewById(R.id.progressbar_login);
     }
 
     //ir a crear cuenta abogado
@@ -84,10 +92,31 @@ public class LoginActivity extends AppCompatActivity {
         firebaseService.signIn(email, password, this, firebaseAuth);
     }
 
+    //mostar progressbar
+    public void showProgressBar(){
+        progressbarLogin.setVisibility(View.VISIBLE);
+    }
+
+    //ocultar progressbar
+    public void hideProgressBar() {
+        progressbarLogin.setVisibility(View.GONE);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
+
         firebaseAuth.addAuthStateListener(authStateListener);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null){
+            SharedPreferences preferences = getSharedPreferences("USER",
+                    Context.MODE_PRIVATE);
+            String email = preferences.getString("email", "email");
+            String password = preferences.getString("password", "password");
+            signIn(email, password);
+        }else if (user == null){
+            hideProgressBar();
+        }
     }
 
     @Override

@@ -1,12 +1,18 @@
 package com.example.conectinglaw.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private String name;
     private String lastname;
     private String email;
     private int cedula;
     private int telephoneNumber;
+    private String photoUrl;
+
+    public User() {
+    }
 
     public User(String name, String lastname, String email, int
             cedula, int telephoneNumber) {
@@ -15,6 +21,7 @@ public class User {
         this.email = email;
         this.cedula = cedula;
         this.telephoneNumber = telephoneNumber;
+        this.photoUrl = "";
     }
 
     public String getName() {
@@ -37,6 +44,10 @@ public class User {
         return telephoneNumber;
     }
 
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -51,5 +62,9 @@ public class User {
 
     public void setTelephoneNumber(int telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

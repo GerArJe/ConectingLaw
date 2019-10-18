@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.conectinglaw.R;
+import com.example.conectinglaw.repository.FirebaseService;
 
 public class ProfileClientFragmentActivity extends Fragment {
 
@@ -20,9 +21,7 @@ public class ProfileClientFragmentActivity extends Fragment {
 
     TextView txtName, txtApellidos, txtCedula,
             txtCorreo, txtCelular;
-
     Button btnCerrarSesion;
-
     ImageButton imageButtonProfilePhoto;
 
     public ProfileClientFragmentActivity(){
