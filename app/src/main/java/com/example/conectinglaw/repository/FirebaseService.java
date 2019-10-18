@@ -21,6 +21,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FirebaseService {
 
@@ -199,6 +204,31 @@ public class FirebaseService {
                 }
             }
         });
+    }
+
+    //buscar los abogados que cumplan con el tipo que se requiere
+    public void lawyersList(String lawyerType, final Activity activity){
+        db.collection("lawyers")
+                .whereArrayContains("topicsWork", lawyerType)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            ArrayList<Lawyer> lawyers = new ArrayList<>();
+                            for (QueryDocumentSnapshot snapshot : task.getResult()){
+                                Log.d(TAG, snapshot.getId() + " => " + snapshot.getData());
+                                lawyers.add(snapshot.toObject(Lawyer.class));
+                            }
+                            //TODO programar intent hacia la selección del abogado
+                        }else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            Toast.makeText(activity.getBaseContext()
+                                    , "Ocurrió un error intente otra vez",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     //cerrar sesión

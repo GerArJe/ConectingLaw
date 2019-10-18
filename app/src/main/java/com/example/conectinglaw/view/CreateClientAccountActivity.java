@@ -12,14 +12,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.example.conectinglaw.R;
-import com.example.conectinglaw.model.Lawyer;
 import com.example.conectinglaw.model.User;
 import com.example.conectinglaw.repository.FirebaseService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CreateClientAccountActivity extends AppCompatActivity {
 
