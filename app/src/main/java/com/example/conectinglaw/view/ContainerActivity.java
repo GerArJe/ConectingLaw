@@ -13,10 +13,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.conectinglaw.R;
+import com.example.conectinglaw.model.User;
 import com.example.conectinglaw.repository.FirebaseService;
 import com.example.conectinglaw.view.fragment.ChatFragmentActivity;
-import com.example.conectinglaw.view.fragment.ProfileClientFragmentActivity;
-import com.example.conectinglaw.view.fragment.ProfileLawyerFragmentActivity;
+import com.example.conectinglaw.view.fragment.ProfileUserFragmentActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,10 +25,8 @@ public class ContainerActivity extends AppCompatActivity {
 
     private static final String TAG = "ContainerActivity";
 
-    final ProfileLawyerFragmentActivity profileLawyerFragmentActivity =
-            new ProfileLawyerFragmentActivity();
-    final ProfileClientFragmentActivity profileClientFragmentActivity =
-            new ProfileClientFragmentActivity();
+    final ProfileUserFragmentActivity profileUserFragmentActivity =
+            new ProfileUserFragmentActivity();
     final ChatFragmentActivity chatFragmentActivity =
             new ChatFragmentActivity();
 
@@ -44,23 +42,22 @@ public class ContainerActivity extends AppCompatActivity {
 
         initialize();
 
-        final String userType = getIntent().getExtras().getString("userType");
+        Bundle bundle = getIntent().getExtras();
+        String userType = bundle.getString("userType");
+        User user = (User) bundle.getSerializable("user");
+
+        Bundle args = new Bundle();
+        args.putString("userType", userType);
+        args.putSerializable("user", user);
+
+        profileUserFragmentActivity.setArguments(args);
 
         //set HomeFragment as Default on first load (Login)
-        if (userType.equals("lawyer")){
-            if (savedInstanceState == null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, profileLawyerFragmentActivity)
-                        .commit();
-            }
-        }else if (userType.equals("client")){
-            if (savedInstanceState == null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, profileClientFragmentActivity)
-                        .commit();
-            }
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, profileUserFragmentActivity)
+                    .commit();
         }
 
         BottomNavigationView bottombar = findViewById(R.id.bottombar);
@@ -72,11 +69,7 @@ public class ContainerActivity extends AppCompatActivity {
 
                 switch (menuItem.getItemId()){
                     case R.id.profile:
-                        if (userType.equals("lawyer")){
-                            addFragment(profileLawyerFragmentActivity);
-                        }else if (userType.equals("client")){
-                            addFragment(profileClientFragmentActivity);
-                        }
+                        addFragment(profileUserFragmentActivity);
                         break;
                     case R.id.chat:
                         addFragment(chatFragmentActivity);

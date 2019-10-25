@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.example.conectinglaw.R;
+import com.example.conectinglaw.model.Client;
 import com.example.conectinglaw.model.User;
 import com.example.conectinglaw.repository.FirebaseService;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +30,7 @@ public class CreateClientAccountActivity extends AppCompatActivity {
     public EditText edtNombre, edtLastname, edtCedula, edtEmail, edtPassword, edtTelephoneNumber;
     ProgressBar progressBarRegister;
 
-    private User user;
+    private Client client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +45,14 @@ public class CreateClientAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showProgressBar();
-                user = new User(edtNombre.getText().toString(),
+                client = new Client(edtNombre.getText().toString(),
                         edtLastname.getText().toString(),
                         edtEmail.getText().toString(),
                         Integer.parseInt(edtCedula.getText().toString()),
                         Integer.parseInt(edtTelephoneNumber.getText().toString()));
                 createAccount(edtEmail.getText().toString(),
                         edtPassword.getText().toString(),
-                        user);
+                        client);
             }
         });
     }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.conectinglaw.model.Client;
 import com.example.conectinglaw.model.Lawyer;
 import com.example.conectinglaw.model.User;
 import com.example.conectinglaw.view.ContainerActivity;
@@ -179,7 +180,7 @@ public class FirebaseService {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()){
                     DocumentSnapshot documentSnapshot = task.getResult();
-                    User user = documentSnapshot.toObject(User.class);
+                    Client client = documentSnapshot.toObject(Client.class);
                     if (documentSnapshot.exists()){
                         Log.d(TAG, "DocumentSnapshot data: " + documentSnapshot.getData());
 
@@ -187,7 +188,7 @@ public class FirebaseService {
                                 "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(activity.getBaseContext(), ContainerActivity.class);
                         intent.putExtra("userType", "client");
-                        intent.putExtra("user", user);
+                        intent.putExtra("user", client);
                         activity.startActivity(intent);
                         activity.finish();
                     }else {
@@ -207,9 +208,9 @@ public class FirebaseService {
     }
 
     //buscar los abogados que cumplan con el tipo que se requiere
-    public void lawyersList(String lawyerType, final Activity activity){
+    public void lawyersType(String lawyerType, final Activity activity){
         db.collection("lawyers")
-                .whereArrayContains("topicsWork", lawyerType)
+                .whereEqualTo(lawyerType, true)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

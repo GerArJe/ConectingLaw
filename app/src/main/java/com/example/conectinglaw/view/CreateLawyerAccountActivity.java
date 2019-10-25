@@ -34,7 +34,9 @@ public class CreateLawyerAccountActivity extends AppCompatActivity {
     ProgressBar progressBarRegister;
 
     private Lawyer lawyer;
-    private List<String> topicsWork = new ArrayList<>();
+    private boolean penal = false;
+    private boolean civil = false;
+    private boolean mercantil = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +52,22 @@ public class CreateLawyerAccountActivity extends AppCompatActivity {
             public void onClick(View v) {
                 showProgressBar();
                 if (cbPenal.isChecked()){
-                    topicsWork.add(cbPenal.getText().toString());
+                    penal = true;
                 }
                 if (cbCivil.isChecked()){
-                    topicsWork.add(cbCivil.getText().toString());
+                    civil = true;
                 }
                 if (cbMercantil.isChecked()){
-                    topicsWork.add(cbMercantil.getText().toString());
+                    mercantil = true;
                 }
                 lawyer = new Lawyer(edtNombre.getText().toString(),
                         edtLastname.getText().toString(),
                         edtEmail.getText().toString(),
                         Integer.parseInt(edtCedula.getText().toString()),
                         Integer.parseInt(edtTelephoneNumber.getText().toString()),
-                        topicsWork);
+                        penal,
+                        civil,
+                        mercantil);
                 createAccount(edtEmail.getText().toString(),
                         edtPassword.getText().toString(),
                         lawyer);

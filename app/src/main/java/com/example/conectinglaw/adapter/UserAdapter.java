@@ -60,12 +60,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
         public void setData(final User user, final onItemClickListener listener){
             txtUsernameCardview.setText(user.getName());
-//            Picasso.get()
-//                    .load(user.getPhotoUrl())
-//                    .error(R.drawable.user_icon)
-//                    .centerCrop()
-//                    .into(ivPhotoProfile);
-
+            if (!user.getPhotoUrl().isEmpty()){
+                Picasso.get()
+                        .load(user.getPhotoUrl())
+                        .error(R.drawable.user_icon)
+                        .centerCrop()
+                        .into(ivPhotoProfile);
+            }
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
