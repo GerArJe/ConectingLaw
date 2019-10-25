@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvChat"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardBackgroundColor="@color/accent"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardElevation="4dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_photoProfile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/user_icon"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/txt_username_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Nombre" />
+
+            <TextView
+                android:id="@+id/txt_username_apellido_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Apellido" />
+
+            <TextView
+                android:id="@+id/txt_username_telefono_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Telefono" />
+
+            <TextView
+                android:id="@+id/txt_typeCase_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Tipo caso" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.example.conectinglaw.R;
 import com.example.conectinglaw.adapter.UserAdapter;
 import com.example.conectinglaw.model.User;
+import com.example.conectinglaw.view.SeleccionarCasoActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -56,6 +58,14 @@ public class ChatFragmentActivity extends Fragment {
 
         rvChat.setLayoutManager(linearLayoutManager);
         rvChat.setAdapter(userAdapter);
+
+        fabAddCase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), SeleccionarCasoActivity.class);
+                startActivity(i);
+            }
+        });
 
         return view;
     }
