@@ -5,6 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.conectinglaw.R;
 import com.example.conectinglaw.adapter.ListadoAbAdapter;
@@ -17,6 +20,8 @@ public class ListadoAbogadosActivity extends AppCompatActivity {
     ArrayList<Lawyer> abogados = new ArrayList<>();
     RecyclerView rvListaAb;
     ArrayList<Lawyer> abFiltrados = new ArrayList<>();
+
+    ImageView ivBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +39,18 @@ public class ListadoAbogadosActivity extends AppCompatActivity {
                 new ListadoAbAdapter(abFiltrados, R.layout.listado_abogados_cardview);
 
         rvListaAb.setAdapter(adapter);
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void asociarEl(){
         rvListaAb = (RecyclerView)findViewById(R.id.rvListaAb);
-
-
+        ivBack = findViewById(R.id.iv_back);
     }
 
     public void makeFakeDATA(){

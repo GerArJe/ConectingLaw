@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.example.conectinglaw.R;
@@ -29,6 +30,7 @@ public class CreateClientAccountActivity extends AppCompatActivity {
     public CheckBox cbPenal, cbCivil, cbMercantil;
     public EditText edtNombre, edtLastname, edtCedula, edtEmail, edtPassword, edtTelephoneNumber;
     ProgressBar progressBarRegister;
+    ImageView ivBack;
 
     private Client client;
 
@@ -55,6 +57,13 @@ public class CreateClientAccountActivity extends AppCompatActivity {
                         client);
             }
         });
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void asociarElement () {
@@ -69,6 +78,7 @@ public class CreateClientAccountActivity extends AppCompatActivity {
         cbMercantil = findViewById(R.id.cb_mercantil);
         btnRegister = findViewById(R.id.btn_register);
         progressBarRegister = findViewById(R.id.progressBar_register);
+        ivBack = findViewById(R.id.iv_back);
     }
 
     //inicializar instancia de Firebase
@@ -97,11 +107,6 @@ public class CreateClientAccountActivity extends AppCompatActivity {
                 firebaseAuth,
                 user,
                 "client");
-    }
-
-    //volver al login
-    public void backToLogin(View view){
-        finish();
     }
 
     //mostar progressbar

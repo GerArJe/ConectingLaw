@@ -23,7 +23,6 @@ public class ProfileUserFragmentActivity extends Fragment {
 
     TextView txtNombreUser, txtApellidosUser, txtCedulaUser,
             txtCorreoUser, txtCelularUser, txtTipoAbogadoUser;
-    Button btnCerrarSesionUser;
     ImageButton fotoPerfilUser;
 
     public ProfileUserFragmentActivity(){
@@ -42,7 +41,6 @@ public class ProfileUserFragmentActivity extends Fragment {
         txtCorreoUser = view.findViewById(R.id.txtCorreo_user);
         txtCelularUser = view.findViewById(R.id.txtCelular_user);
         txtTipoAbogadoUser = view.findViewById(R.id.txtTipoAb_user);
-        btnCerrarSesionUser = view.findViewById(R.id.btnCerrarSes_user);
         fotoPerfilUser = view.findViewById(R.id.fotoPerfilUser);
 
         String userType = getArguments().getString("userType");
