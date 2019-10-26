@@ -10,6 +10,7 @@
     <string name="tab_profile">Yo</string>
     <string name="menu_signout">Cerrar Sesión</string>
     <string name="menu_about">Acerca de</string>
+    <string name="text_item">Message</string>
 
     <string name="register">Registro</string>
     <string name="tag">GY</string>

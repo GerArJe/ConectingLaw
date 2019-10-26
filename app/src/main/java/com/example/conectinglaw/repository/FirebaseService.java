@@ -9,10 +9,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.conectinglaw.model.Chat;
 import com.example.conectinglaw.model.Client;
 import com.example.conectinglaw.model.Lawyer;
 import com.example.conectinglaw.model.User;
 import com.example.conectinglaw.view.ContainerActivity;
+import com.example.conectinglaw.view.ListadoAbogadosActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,24 +43,8 @@ public class FirebaseService {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-
-                    FirebaseUser firebaseUser = task.getResult().getUser();
-
-                    SharedPreferences preferences = activity.getSharedPreferences("USER",
-                            Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("email", firebaseUser.getEmail());
-                    editor.putString("password", password);
-                    editor.commit();
-
+                    createPreferencesSignIn(email, password, activity);
                     searchTypeUser(email, activity);
-
-//                    Toast.makeText(activity.getBaseContext(),
-//                            "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(activity.getBaseContext(), ContainerActivity.class);
-//                    intent.putExtra("userType", searchTypeUser(email));
-//                    activity.startActivity(intent);
-//                    activity.finish();
                 } else {
                     Toast.makeText(activity.getBaseContext(),
                             "Error al iniciar sesión", Toast.LENGTH_SHORT).show();
@@ -79,14 +65,33 @@ public class FirebaseService {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "DocumentSnapshot successfully written!");
-                            createUserWithEmailAndPassword(email, password, activity,
-                                    firebaseAuth, user, userType);
+                            Toast.makeText(activity.getBaseContext(),
+                                    "Cuenta creada exitosamente", Toast.LENGTH_SHORT).show();
+                            createPreferencesSignIn(email, password, activity);
+
+                            Intent intent = new Intent(activity.getBaseContext(), ContainerActivity.class);
+                            intent.putExtra("userType", userType);
+                            intent.putExtra("user", user);
+                            activity.startActivity(intent);
+                            activity.finish();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.w(TAG, "Error writing document", e);
+                            Toast.makeText(activity.getBaseContext(),
+                                    "No se pudo crear la cuenta", Toast.LENGTH_SHORT).show();
+
+                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                            firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        Log.d(TAG, "User account deleted.");
+                                    }
+                                }
+                            });
                         }
                     });
         } else if (userType.equals("client")) {
@@ -97,14 +102,32 @@ public class FirebaseService {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "DocumentSnapshot successfully written!");
-                            createUserWithEmailAndPassword(email, password, activity,
-                                    firebaseAuth, user, userType);
+                            Toast.makeText(activity.getBaseContext(),
+                                    "Cuenta creada exitosamente", Toast.LENGTH_SHORT).show();
+                            createPreferencesSignIn(email, password, activity);
+
+                            Intent intent = new Intent(activity.getBaseContext(), ContainerActivity.class);
+                            intent.putExtra("userType", userType);
+                            intent.putExtra("user", user);
+                            activity.startActivity(intent);
+                            activity.finish();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.w(TAG, "Error writing document", e);
+                            Toast.makeText(activity.getBaseContext(),
+                                    "No se pudo crear la cuenta", Toast.LENGTH_SHORT).show();
+                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                            firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        Log.d(TAG, "User account deleted.");
+                                    }
+                                }
+                            });
                         }
                     });
         }
@@ -112,28 +135,19 @@ public class FirebaseService {
     }
 
     //crear autenticación con email y contraseña
-    public void createUserWithEmailAndPassword(String email, String password, final Activity activity,
+    public void createUserWithEmailAndPassword(final String email, final String password, final Activity activity,
                                                final FirebaseAuth firebaseAuth, final User user,
                                                final String userType){
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(activity.getBaseContext(),
-                            "Cuenta creada exitosamente", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(activity.getBaseContext(), ContainerActivity.class);
-                    intent.putExtra("userType", userType);
-                    intent.putExtra("user", user);
-                    activity.startActivity(intent);
-                    activity.finish();
+                    Log.d(TAG, "Creación de autenticación exitoso");
+                    createAccount(email, password, activity, firebaseAuth, user, userType);
                 } else {
+                    Log.d(TAG, "Error al crear la autenticación");
                     Toast.makeText(activity.getBaseContext(),
                             "No se pudo crear la cuenta", Toast.LENGTH_SHORT).show();
-                    if (userType.equals("lawyer")) {
-                        db.collection("lawyers").document(user.getEmail()).delete();
-                    } else if (userType.equals("client")) {
-                        db.collection("clients").document(user.getEmail()).delete();
-                    }
                 }
             }
         });
@@ -208,7 +222,7 @@ public class FirebaseService {
     }
 
     //buscar los abogados que cumplan con el tipo que se requiere
-    public void lawyersType(String lawyerType, final Activity activity){
+    public void listLawyersType(String lawyerType, final Activity activity){
         db.collection("lawyers")
                 .whereEqualTo(lawyerType, true)
                 .get()
@@ -221,7 +235,11 @@ public class FirebaseService {
                                 Log.d(TAG, snapshot.getId() + " => " + snapshot.getData());
                                 lawyers.add(snapshot.toObject(Lawyer.class));
                             }
-                            //TODO programar intent hacia la selección del abogado
+                            Intent intent =
+                                    new Intent(activity.getBaseContext(), ListadoAbogadosActivity.class);
+                            intent.putExtra("lawyers", lawyers);
+                            activity.startActivity(intent);
+                            activity.finish();
                         }else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                             Toast.makeText(activity.getBaseContext()
@@ -242,5 +260,35 @@ public class FirebaseService {
         editor.apply();
         firebaseAuth.signOut();
         activity.finish();
+    }
+
+    //guardar email y password para el incio de sesión
+    public void createPreferencesSignIn(final String email, final String password, final Activity activity){
+        SharedPreferences preferences = activity.getSharedPreferences("USER",
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("email", email);
+        editor.putString("password", password);
+        editor.commit();
+    }
+
+    public void sendMessage(Chat chat, String idSender, String idReceiver){
+        db.collection("chats")
+                .document(idSender + "&" + idReceiver)
+                .collection("messages")
+                .document()
+                .set(chat)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "mensaje enviado exitosamente");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "fallo al enviar mensaje" + e);
+                    }
+                });
     }
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.conectinglaw.R;
 import com.example.conectinglaw.model.Lawyer;
+import com.example.conectinglaw.model.User;
 
 import java.util.ArrayList;
 
@@ -17,10 +18,13 @@ public class ListadoAbAdapter extends RecyclerView.Adapter<ListadoAbAdapter.List
 
     ArrayList<Lawyer> abFiltrados;
     int layout;
+    onItemClickListener listener;
 
-    public ListadoAbAdapter(ArrayList<Lawyer> abFiltrados, int layout) {
+    public ListadoAbAdapter(ArrayList<Lawyer> abFiltrados,
+                            int layout, onItemClickListener listener) {
         this.abFiltrados = abFiltrados;
         this.layout = layout;
+        this.listener = listener;
     }
 
     @NonNull
@@ -32,7 +36,7 @@ public class ListadoAbAdapter extends RecyclerView.Adapter<ListadoAbAdapter.List
 
     @Override
     public void onBindViewHolder(@NonNull ListadoViewHolder holder, int position) {
-        holder.onBind(abFiltrados.get(position), position);
+        holder.onBind(abFiltrados.get(position), listener);
 
     }
 
@@ -56,7 +60,7 @@ public class ListadoAbAdapter extends RecyclerView.Adapter<ListadoAbAdapter.List
 
 
         }
-        public void onBind(final Lawyer abogado, final int position){
+        public void onBind(final Lawyer abogado, final onItemClickListener listener){
             ArrayList<String> textoTipoAbogado = new ArrayList<>();
 
             if (abogado.isPenal()){
@@ -68,10 +72,21 @@ public class ListadoAbAdapter extends RecyclerView.Adapter<ListadoAbAdapter.List
             if (abogado.isCivil()){
                 textoTipoAbogado.add("Civil");
             }
-            tipoAb.setText("Tipo Abogado" +  textoTipoAbogado);
+            tipoAb.setText("Tipo Abogado: " +  textoTipoAbogado);
             nombre.setText("Nombre: " + abogado.getName());
             apellido.setText("Apellido: "+ abogado.getLastname());
             telefono.setText("Telefono: "+ abogado.getTelephoneNumber());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(abogado, getAdapterPosition());
+                }
+            });
         }
+    }
+
+    public interface onItemClickListener{
+        void onItemClick(Lawyer lawyer, int position);
     }
 }

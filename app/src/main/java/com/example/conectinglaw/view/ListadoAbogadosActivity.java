@@ -1,9 +1,11 @@
 package com.example.conectinglaw.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +14,8 @@ import android.widget.ImageView;
 import com.example.conectinglaw.R;
 import com.example.conectinglaw.adapter.ListadoAbAdapter;
 import com.example.conectinglaw.model.Lawyer;
+import com.example.conectinglaw.model.User;
+import com.example.conectinglaw.repository.FirebaseService;
 
 import java.util.ArrayList;
 
@@ -19,7 +23,7 @@ public class ListadoAbogadosActivity extends AppCompatActivity {
 
     ArrayList<Lawyer> abogados = new ArrayList<>();
     RecyclerView rvListaAb;
-    ArrayList<Lawyer> abFiltrados = new ArrayList<>();
+    ArrayList<Lawyer> abFiltrados;
 
     ImageView ivBack;
 
@@ -30,13 +34,23 @@ public class ListadoAbogadosActivity extends AppCompatActivity {
 
         asociarEl();
 
-        String TipoAb = getIntent().getExtras().getString("TipoAb");
-        makeFakeDATA();
-        filtrarAb(TipoAb);
+//        String TipoAb = getIntent().getExtras().getString("TipoAb");
+//        makeFakeDATA();
+//        filtrarAb(TipoAb);
+
+        abFiltrados = (ArrayList<Lawyer>) getIntent().getSerializableExtra("lawyers");
 
         rvListaAb.setLayoutManager(new LinearLayoutManager(this));
         ListadoAbAdapter adapter =
-                new ListadoAbAdapter(abFiltrados, R.layout.listado_abogados_cardview);
+                new ListadoAbAdapter(abFiltrados, R.layout.listado_abogados_cardview, new ListadoAbAdapter.onItemClickListener() {
+                    @Override
+                    public void onItemClick(Lawyer lawyer, int position) {
+                        Intent intent = new Intent(getBaseContext(), ChatActivity.class);
+                        intent.putExtra("receiver", lawyer.getEmail());
+                        startActivity(intent);
+                        finish();
+                    }
+                });
 
         rvListaAb.setAdapter(adapter);
 

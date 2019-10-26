@@ -2,16 +2,20 @@ package com.example.conectinglaw.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.conectinglaw.R;
+import com.example.conectinglaw.repository.FirebaseService;
 
 public class SeleccionarCasoActivity extends AppCompatActivity {
 
     Button btnMer,btnPen, btnCiv;
+
+    FirebaseService firebaseService = new FirebaseService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,32 +27,21 @@ public class SeleccionarCasoActivity extends AppCompatActivity {
         btnPen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getBaseContext(), ListadoAbogadosActivity.class);
-                i.putExtra("TipoAb", "Penal");
-                startActivity(i);
-                finish();
-
+                serachLawyer("penal");
             }
         });
 
         btnMer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getBaseContext(), ListadoAbogadosActivity.class);
-                i.putExtra("TipoAb", "Mercantil");
-                startActivity(i);
-                finish();
-
+                serachLawyer("mercantil");
             }
         });
 
         btnCiv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getBaseContext(), ListadoAbogadosActivity.class);
-                i.putExtra("TipoAb", "Civil");
-                startActivity(i);
-                finish();
+                serachLawyer("civil");
             }
         });
 
@@ -58,5 +51,9 @@ public class SeleccionarCasoActivity extends AppCompatActivity {
         btnCiv=(Button)findViewById(R.id.btnCivil);
         btnMer=(Button)findViewById(R.id.btnMercantil);
         btnPen=(Button)findViewById(R.id.btnPenal);
+    }
+
+    public void serachLawyer(String lawyerType){
+        firebaseService.listLawyersType(lawyerType, this);
     }
 }

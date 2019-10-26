@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.conectinglaw">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +14,6 @@
         <activity android:name=".view.ListadoAbogadosActivity"></activity>
         <activity android:name=".view.SeleccionarCasoActivity" />
         <activity android:name=".view.ChatActivity" />
-        <activity android:name=".view.fragment.ProfileClientFragmentActivity" />
         <activity android:name=".view.fragment.ChatFragmentActivity" />
         <activity android:name=".view.fragment.ProfileUserFragmentActivity" />
         <activity

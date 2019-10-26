@@ -100,7 +100,7 @@ public class CreateClientAccountActivity extends AppCompatActivity {
 
     //crear cuenta
     private void createAccount(final String email, final String password, final User user){
-        firebaseService.createAccount(
+        firebaseService.createUserWithEmailAndPassword(
                 email,
                 password,
                 CreateClientAccountActivity.this,
