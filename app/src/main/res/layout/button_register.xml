@@ -23,6 +23,6 @@
         android:fontFamily="@font/roboto_regular"
         android:onClick="registrar"
         android:text="@string/register"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/primary_text" />
 
 </LinearLayout>

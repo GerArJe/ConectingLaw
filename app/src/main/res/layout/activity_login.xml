@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_dark"
+    android:background="@drawable/library"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/margin_loginView"
@@ -64,7 +64,8 @@
         android:fontFamily="@font/roboto_regular"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="@string/btn_login" />
+        android:text="@string/btn_login"
+        android:textColorLink="#40FFFFFF" />
 
 
     <TextView
