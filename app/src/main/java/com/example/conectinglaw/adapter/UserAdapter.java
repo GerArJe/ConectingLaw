@@ -17,12 +17,12 @@ import java.util.ArrayList;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
-    ArrayList<User> users;
+    ArrayList<String> nameReferenceChats;
     int layout;
     onItemClickListener listener;
 
-    public UserAdapter(ArrayList<User> users, int layout, onItemClickListener listener) {
-        this.users = users;
+    public UserAdapter(ArrayList<String> nameReferenceChats, int layout, onItemClickListener listener) {
+        this.nameReferenceChats = nameReferenceChats;
         this.layout = layout;
         this.listener = listener;
     }
@@ -36,48 +36,38 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        User user = users.get(position);
-        holder.setData(user, listener);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position){
+        String nameReferenceChat = nameReferenceChats.get(position);
+        holder.setData(nameReferenceChat, listener);
     }
 
     @Override
     public int getItemCount() {
-        return users.size();
+        return nameReferenceChats.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView ivPhotoProfile;
-        TextView txtUsernameCardview, txtTypeCaseCardview;
+        TextView txtNameReferenceChatCardview;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivPhotoProfile = itemView.findViewById(R.id.iv_photoProfile);
-            txtUsernameCardview = itemView.findViewById(R.id.txt_username_cardview);
-            txtTypeCaseCardview = itemView.findViewById(R.id.txt_typeCase_cardview);
+            txtNameReferenceChatCardview = itemView.findViewById(R.id.txt_nameReferenceChat_cardview);
         }
 
-        public void setData(final User user, final onItemClickListener listener){
-            txtUsernameCardview.setText(user.getName());
-            if (!user.getPhotoUrl().isEmpty()){
-                Picasso.get()
-                        .load(user.getPhotoUrl())
-                        .error(R.drawable.user_icon)
-                        .centerCrop()
-                        .into(ivPhotoProfile);
-            }
+        public void setData(final String nameReferenceChat, final onItemClickListener listener){
+            txtNameReferenceChatCardview.setText(nameReferenceChat);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(user, getAdapterPosition());
+                    listener.onItemClick(nameReferenceChat, getAdapterPosition());
                 }
             });
         }
     }
 
     public interface onItemClickListener{
-        void onItemClick(User user, int position);
+        void onItemClick(String nameReferenceChat, int position);
     }
 }

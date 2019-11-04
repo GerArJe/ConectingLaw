@@ -27,21 +27,21 @@ public class SeleccionarCasoActivity extends AppCompatActivity {
         btnPen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                serachLawyer("penal");
+                searchLawyer("penal");
             }
         });
 
         btnMer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                serachLawyer("mercantil");
+                searchLawyer("mercantil");
             }
         });
 
         btnCiv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                serachLawyer("civil");
+                searchLawyer("civil");
             }
         });
 
@@ -53,7 +53,7 @@ public class SeleccionarCasoActivity extends AppCompatActivity {
         btnPen=(Button)findViewById(R.id.btnPenal);
     }
 
-    public void serachLawyer(String lawyerType){
+    public void searchLawyer(String lawyerType){
         firebaseService.listLawyersType(lawyerType, this);
     }
 }

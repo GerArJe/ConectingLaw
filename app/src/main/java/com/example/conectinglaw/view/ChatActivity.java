@@ -17,8 +17,13 @@ import com.example.conectinglaw.repository.FirebaseService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -29,7 +34,7 @@ public class ChatActivity extends AppCompatActivity {
     ImageView btnSendMesssage, iv_back;
     TextView txtAppbar;
 
-    private List<Chat> chats = new ArrayList<>();
+    private ArrayList<Chat> chats = new ArrayList<>();
     private String idUser;
 
     FirebaseUser firebaseUser;
@@ -44,6 +49,8 @@ public class ChatActivity extends AppCompatActivity {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final String idReceiver = getIntent().getExtras().getString("receiver");
+        chats = (ArrayList<Chat>) getIntent().getSerializableExtra("chats");
+        final String userType = getIntent().getExtras().getString("userType");
 
         txtAppbar.setText(idReceiver);
 
@@ -52,14 +59,30 @@ public class ChatActivity extends AppCompatActivity {
         final ChatAdapter chatAdapter = new ChatAdapter(chats, idUser);
         rvMessages.setAdapter(chatAdapter);
 
+        firebaseService.listenForUpdatesMessages(chatAdapter, chats, idUser, idReceiver);
+
         btnSendMesssage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Chat chat = new Chat(idUser, messageArea.getText().toString());
-//                firebaseService.sendMessage(
-//                        chat,
-//                        idUser,
-//                        idReceiver);
+                String place = "America/Bogota";
+                TimeZone timeZone = java.util.TimeZone.getTimeZone(place);
+                Calendar calendar = Calendar.getInstance(timeZone);
+                DateFormat dateFormat = DateFormat.getDateTimeInstance();
+                dateFormat.setCalendar(calendar);
+                Chat chat = new Chat(idUser,
+                        messageArea.getText().toString(),
+                        dateFormat.format(new Date()));
+                if (userType.equals("client")){
+                    firebaseService.sendMessage(
+                            chat,
+                            idUser,
+                            idReceiver);
+                }else if (userType.equals("lawyer")){
+                    firebaseService.sendMessage(
+                            chat,
+                            idReceiver,
+                            idUser);
+                }
                 chats.add(chat);
                 messageArea.setText("");
                 chatAdapter.notifyDataSetChanged();

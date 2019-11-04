@@ -4,7 +4,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,9 +16,13 @@ import android.widget.Toast;
 
 import com.example.conectinglaw.R;
 import com.example.conectinglaw.adapter.UserAdapter;
+import com.example.conectinglaw.model.Lawyer;
 import com.example.conectinglaw.model.User;
+import com.example.conectinglaw.repository.FirebaseService;
 import com.example.conectinglaw.view.SeleccionarCasoActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -27,7 +33,9 @@ public class ChatFragmentActivity extends Fragment {
     RecyclerView rvChat;
     FloatingActionButton fabAddCase;
 
-    ArrayList<User> users;
+    ArrayList<String> nameReferencesChats;
+
+    FirebaseService firebaseService = new FirebaseService();
 
     public ChatFragmentActivity(){
 
@@ -39,9 +47,12 @@ public class ChatFragmentActivity extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_chat_fragment, container, false);
 
-        users = new ArrayList<>();
-
-        getFakeData();
+        nameReferencesChats = new ArrayList<>();
+        final String userType = getArguments().getString("userType");
+        final User user = (User) getArguments().getSerializable("user");
+        for (String nameReference : user.getChatList()) {
+            nameReferencesChats.add(nameReference);
+        }
 
         rvChat = view.findViewById(R.id.rv_Chat);
         fabAddCase = view.findViewById(R.id.fabAddCase);
@@ -49,10 +60,15 @@ public class ChatFragmentActivity extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        UserAdapter userAdapter = new UserAdapter(users, R.layout.chat_cardview, new UserAdapter.onItemClickListener() {
+        UserAdapter userAdapter = new UserAdapter(nameReferencesChats, R.layout.chat_cardview, new UserAdapter.onItemClickListener() {
             @Override
-            public void onItemClick(User user, int position) {
-                Toast.makeText(getContext(), "excelente", Toast.LENGTH_SHORT).show();
+            public void onItemClick(String nameReferenceChat, int position) {
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (userType.equals("client")){
+                    goToChat(firebaseUser.getEmail(), nameReferenceChat, userType);
+                }else if (userType.equals("lawyer")){
+                    goToChat(nameReferenceChat, firebaseUser.getEmail(), userType);
+                }
             }
         });
 
@@ -70,12 +86,8 @@ public class ChatFragmentActivity extends Fragment {
         return view;
     }
 
-    public void getFakeData(){
-        User user1 = new User("jose", "Alodsd", "sdasd@gmail.com",
-                123, 123);
-        User user2 = new User("maria", "dfsdfsd", "dffdfdf@gmail.com",
-                123, 123);
-        users.add(user1);
-        users.add(user2);
+    public void goToChat(String emailClient, String emailLawyer, String userType){
+        firebaseService.getMessages(emailClient, emailLawyer,userType, getActivity());
     }
+
 }

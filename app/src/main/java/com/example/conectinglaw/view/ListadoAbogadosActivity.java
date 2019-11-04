@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,10 +17,14 @@ import com.example.conectinglaw.adapter.ListadoAbAdapter;
 import com.example.conectinglaw.model.Lawyer;
 import com.example.conectinglaw.model.User;
 import com.example.conectinglaw.repository.FirebaseService;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
 public class ListadoAbogadosActivity extends AppCompatActivity {
+
+    FirebaseService firebaseService = new FirebaseService();
 
     ArrayList<Lawyer> abogados = new ArrayList<>();
     RecyclerView rvListaAb;
@@ -45,10 +50,9 @@ public class ListadoAbogadosActivity extends AppCompatActivity {
                 new ListadoAbAdapter(abFiltrados, R.layout.listado_abogados_cardview, new ListadoAbAdapter.onItemClickListener() {
                     @Override
                     public void onItemClick(Lawyer lawyer, int position) {
-                        Intent intent = new Intent(getBaseContext(), ChatActivity.class);
-                        intent.putExtra("receiver", lawyer.getEmail());
-                        startActivity(intent);
-                        finish();
+                        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                        firebaseService.addChatToList(firebaseUser.getEmail(), lawyer.getEmail());
+                        goToChat(firebaseUser, lawyer);
                     }
                 });
 
@@ -67,43 +71,9 @@ public class ListadoAbogadosActivity extends AppCompatActivity {
         ivBack = findViewById(R.id.iv_back);
     }
 
-    public void makeFakeDATA(){
-
-        Lawyer abogado1 = new Lawyer(
-                "aleps",
-                "Rye",
-                "yreyrey@unab.edu.co",
-                1234, 1234656, true, false, false);
-        Lawyer abogado2 = new Lawyer(
-                "Germna",
-                "arevalo",
-                "Garevalo12@unab.edu.co",
-                1234,
-                123456 ,
-                false,
-                false,
-                true);
-        Lawyer abogado3 = new Lawyer("Jesus", " Castellanos", "JCastellanos123@unab.edu.co", 1234, 1234, false, true, false);
-
-        abogados.add(abogado1);
-        abogados.add(abogado2);
-        abogados.add(abogado3);
-
-
+    public void goToChat(FirebaseUser firebaseUser, Lawyer lawyer){
+        firebaseService.getMessages(firebaseUser.getEmail(), lawyer.getEmail(), "client",
+                this);
     }
 
-    private void filtrarAb(String TipoAb){
-
-        for (Lawyer ab: abogados ){
-            if (TipoAb.equals("Penal") && ab.isPenal() == true){
-                abFiltrados.add(ab);
-            }
-
-            else if (TipoAb.equals("Mercantil") && ab.isMercantil() == true){abFiltrados.add(ab);
-            }
-
-            else if (TipoAb.equals("Civil") && ab.isCivil()==true){abFiltrados.add(ab);
-            }
-        }
-    }
 }

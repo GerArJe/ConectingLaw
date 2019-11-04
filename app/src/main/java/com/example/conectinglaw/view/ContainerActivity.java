@@ -51,6 +51,7 @@ public class ContainerActivity extends AppCompatActivity {
         args.putSerializable("user", user);
 
         profileUserFragmentActivity.setArguments(args);
+        chatFragmentActivity.setArguments(args);
 
         //set HomeFragment as Default on first load (Login)
         if (savedInstanceState == null) {

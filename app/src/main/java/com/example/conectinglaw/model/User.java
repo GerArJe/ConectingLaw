@@ -1,6 +1,7 @@
 package com.example.conectinglaw.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class User implements Serializable {
 
@@ -10,6 +11,7 @@ public class User implements Serializable {
     private int cedula;
     private int telephoneNumber;
     private String photoUrl;
+    private ArrayList<String> chatList;
 
     public User() {
     }
@@ -22,6 +24,7 @@ public class User implements Serializable {
         this.cedula = cedula;
         this.telephoneNumber = telephoneNumber;
         this.photoUrl = "";
+        this.chatList = new ArrayList<>();
     }
 
     public String getName() {
@@ -48,6 +51,10 @@ public class User implements Serializable {
         return photoUrl;
     }
 
+    public ArrayList<String> getChatList() {
+        return chatList;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -66,5 +73,9 @@ public class User implements Serializable {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public void setChatList(ArrayList<String> chatList) {
+        this.chatList = chatList;
     }
 }
