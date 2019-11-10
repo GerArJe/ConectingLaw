@@ -344,10 +344,10 @@ public class FirebaseService {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        ArrayList<Chat> chats = new ArrayList<>();
+                        //ArrayList<Chat> chats = new ArrayList<>();
                         for (QueryDocumentSnapshot snapshot : task.getResult()) {
                             Log.d(TAG, snapshot.getId() + " => " + snapshot.getData());
-                            chats.add(snapshot.toObject(Chat.class));
+                            //chats.add(snapshot.toObject(Chat.class));
                         }
 
                         Intent intent = new Intent(activity.getBaseContext(), ChatActivity.class);
@@ -356,10 +356,9 @@ public class FirebaseService {
                         }else if (userType.equals("lawyer")){
                             intent.putExtra("receiver", idSender);
                         }
-                        intent.putExtra("chats", chats);
+                        //intent.putExtra("chats", chats);
                         intent.putExtra("userType", userType);
                         activity.startActivity(intent);
-                        activity.finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -371,28 +370,61 @@ public class FirebaseService {
     }
 
     //actualizar lista de mensajes apenas ocurra un cambio en la base de datos
-    public void listenForUpdatesMessages(final ChatAdapter chatAdapter, final List<Chat> chats, String idSender, String idReceiver) {
-        db.collection("chats")
-                .document(idSender + "&" + idReceiver)
-                .collection("messages")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
+    public void listenForUpdatesMessages(final ChatAdapter chatAdapter, final List<Chat> chats,
+                                         String idUser, String idReceiver, String userType) {
+        if (userType.equals("client")){
 
-                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                            if (doc.get("name") != null) {
-                                chats.add(doc.toObject(Chat.class));
+            db.collection("chats")
+                    .document(idUser + "&" + idReceiver)
+                    .collection("messages")
+                    .orderBy("time", Query.Direction.ASCENDING)
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            Log.d(TAG, "PRUEBA: ");
+                            if (e != null) {
+                                Log.w(TAG, "Listen failed.", e);
+                                return;
                             }
-                        }
-                        Log.d(TAG, "Current chats: " + chats.toString());
-                    }
-                });
+                            chats.clear();
+                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                Log.d(TAG, "PRUEBA: " + doc.get("message"));
+                                if (doc.get("message") != null) {
 
-        chatAdapter.notifyDataSetChanged();
+                                    chats.add(doc.toObject(Chat.class));
+                                    chatAdapter.notifyDataSetChanged();
+                                }
+                            }
+                            Log.d(TAG, "Current chats: " + chats.toString());
+                        }
+                    });
+
+        }else if (userType.equals("lawyer")){
+            db.collection("chats")
+                    .document(idReceiver + "&" + idUser)
+                    .collection("messages")
+                    .orderBy("time", Query.Direction.DESCENDING)
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            Log.d(TAG, "PRUEBA: ");
+                            if (e != null) {
+                                Log.w(TAG, "Listen failed.", e);
+                                return;
+                            }
+                            chats.clear();
+                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                Log.d(TAG, "PRUEBA: " + doc.get("message"));
+                                if (doc.get("message") != null) {
+
+                                    chats.add(doc.toObject(Chat.class));
+                                    chatAdapter.notifyDataSetChanged();
+                                }
+                            }
+                            Log.d(TAG, "Current chats: " + chats.toString());
+                        }
+                    });
+        }
     }
 
     public void addChatToList(String emailClient, String emailLawyer) {

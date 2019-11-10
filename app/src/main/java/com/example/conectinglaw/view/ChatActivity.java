@@ -14,6 +14,7 @@ import com.example.conectinglaw.R;
 import com.example.conectinglaw.adapter.ChatAdapter;
 import com.example.conectinglaw.model.Chat;
 import com.example.conectinglaw.repository.FirebaseService;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -49,7 +50,7 @@ public class ChatActivity extends AppCompatActivity {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final String idReceiver = getIntent().getExtras().getString("receiver");
-        chats = (ArrayList<Chat>) getIntent().getSerializableExtra("chats");
+        //chats = (ArrayList<Chat>) getIntent().getSerializableExtra("chats");
         final String userType = getIntent().getExtras().getString("userType");
 
         txtAppbar.setText(idReceiver);
@@ -59,7 +60,7 @@ public class ChatActivity extends AppCompatActivity {
         final ChatAdapter chatAdapter = new ChatAdapter(chats, idUser);
         rvMessages.setAdapter(chatAdapter);
 
-        firebaseService.listenForUpdatesMessages(chatAdapter, chats, idUser, idReceiver);
+        firebaseService.listenForUpdatesMessages(chatAdapter, chats, idUser, idReceiver, userType);
 
         btnSendMesssage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,9 +70,10 @@ public class ChatActivity extends AppCompatActivity {
                 Calendar calendar = Calendar.getInstance(timeZone);
                 DateFormat dateFormat = DateFormat.getDateTimeInstance();
                 dateFormat.setCalendar(calendar);
+                Timestamp timestamp = Timestamp.now();
                 Chat chat = new Chat(idUser,
                         messageArea.getText().toString(),
-                        dateFormat.format(new Date()));
+                        timestamp);
                 if (userType.equals("client")){
                     firebaseService.sendMessage(
                             chat,

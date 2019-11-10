@@ -1,16 +1,19 @@
 package com.example.conectinglaw.model;
-import java.io.Serializable;
-import java.util.Date;
 
-public class Chat implements Serializable {
+import com.google.firebase.Timestamp;
+
+import java.io.Serializable;
+
+
+public class Chat implements Serializable{
     private String idUser;
     private String message;
-    private String time;
+    private com.google.firebase.Timestamp time;
 
     public Chat() {
     }
 
-    public Chat(String idUser, String message, String time) {
+    public Chat(String idUser, String message, com.google.firebase.Timestamp time) {
         this.idUser = idUser;
         this.message = message;
         this.time = time;
@@ -24,7 +27,7 @@ public class Chat implements Serializable {
         return message;
     }
 
-    public String getTime() {
+    public Timestamp getTime() {
         return time;
     }
 }

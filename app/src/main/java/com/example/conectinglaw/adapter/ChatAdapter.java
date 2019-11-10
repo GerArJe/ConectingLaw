@@ -54,7 +54,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Chat chat = mDataSet.get(position);
         holder.tvMessage.setText(chat.getMessage());
-        holder.tvFechaMessage.setText(chat.getTime());
+        holder.tvFechaMessage.setText(chat.getTime().toDate() + "");
     }
 
     @Override
