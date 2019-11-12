@@ -99,7 +99,10 @@ public class ProfileUserFragmentActivity extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             imageUri = data.getData();
-            fotoPerfilUser.setImageURI(imageUri);
+            Picasso.get()
+                    .load(imageUri)
+                    .error(R.drawable.user_icon)
+                    .into(fotoPerfilUser);
         }
     }
 }
