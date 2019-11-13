@@ -4,12 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.nfc.Tag;
 import android.renderscript.ScriptGroup;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.example.conectinglaw.R;
 import com.example.conectinglaw.adapter.ChatAdapter;
 import com.example.conectinglaw.model.Chat;
 import com.example.conectinglaw.model.Client;
@@ -34,7 +42,12 @@ import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +63,13 @@ public class FirebaseService {
 
     //Instancia de Cloud Firestore
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    // [START storage_field_initialization]
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    // [END storage_field_initialization]
+
+    // Create a storage reference from our app
+    StorageReference storageRef = storage.getReference();
 
     //iniciar sesion
     public void signIn(final String email, final String password, final Activity activity, FirebaseAuth firebaseAuth) {
@@ -351,9 +371,9 @@ public class FirebaseService {
                         }
 
                         Intent intent = new Intent(activity.getBaseContext(), ChatActivity.class);
-                        if (userType.equals("client")){
+                        if (userType.equals("client")) {
                             intent.putExtra("receiver", idReceiver);
-                        }else if (userType.equals("lawyer")){
+                        } else if (userType.equals("lawyer")) {
                             intent.putExtra("receiver", idSender);
                         }
                         //intent.putExtra("chats", chats);
@@ -372,7 +392,7 @@ public class FirebaseService {
     //actualizar lista de mensajes apenas ocurra un cambio en la base de datos
     public void listenForUpdatesMessages(final ChatAdapter chatAdapter, final List<Chat> chats,
                                          String idUser, String idReceiver, String userType) {
-        if (userType.equals("client")){
+        if (userType.equals("client")) {
 
             db.collection("chats")
                     .document(idUser + "&" + idReceiver)
@@ -399,7 +419,7 @@ public class FirebaseService {
                         }
                     });
 
-        }else if (userType.equals("lawyer")){
+        } else if (userType.equals("lawyer")) {
             db.collection("chats")
                     .document(idReceiver + "&" + idUser)
                     .collection("messages")
@@ -440,7 +460,7 @@ public class FirebaseService {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating document", e);
+                        Log.e(TAG, "Error updating document", e);
                     }
                 });
 
@@ -455,9 +475,89 @@ public class FirebaseService {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating document", e);
+                        Log.e(TAG, "Error updating document", e);
                     }
                 });
+    }
+
+    public void uploadPhoto(Uri file, final String userId, final String userType) {
+        final StorageReference reference = storageRef.child(userId + ".jpg");
+        UploadTask uploadTask = reference.putFile(file);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Log.d(TAG, "Error al subir imagen" + exception);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                Log.e(TAG, "Exito al subir imagen" + taskSnapshot);
+                addPhotoURL(reference.getPath(), userId, userType);
+            }
+        });
+
+
+    }
+
+    public void addPhotoURL(String photoReference, String userId, String userType) {
+        if (userType.equals("client")) {
+            db.collection("clients")
+                    .document(userId)
+                    .update("photoUrl", photoReference)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "Error updating document", e);
+                        }
+                    });
+        } else if (userType.equals("lawyer")) {
+            db.collection("lawyers")
+                    .document(userId)
+                    .update("photoUrl", photoReference)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "Error updating document", e);
+                        }
+                    });
+        }
+    }
+
+    public void downloadPhoto(final ImageView imageView, final String reference) {
+        storageRef.child(reference).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                Log.w(TAG, "Imagen descargada");
+                Picasso.get()
+                        .load(uri)
+                        .error(R.drawable.user_icon)
+                        .into(imageView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.e(TAG, "No se puedo descargar la foto" + exception);
+            }
+        });
     }
 
 }

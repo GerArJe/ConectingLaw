@@ -21,6 +21,7 @@ import com.example.conectinglaw.R;
 import com.example.conectinglaw.model.Client;
 import com.example.conectinglaw.model.Lawyer;
 import com.example.conectinglaw.model.User;
+import com.example.conectinglaw.repository.FirebaseService;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -40,6 +41,11 @@ public class ProfileUserFragmentActivity extends Fragment {
             txtCorreoUser, txtCelularUser, txtTipoAbogadoUser;
     ImageView fotoPerfilUser;
 
+    private User user;
+    private String userType;
+
+    FirebaseService firebaseService = new FirebaseService();
+
     public ProfileUserFragmentActivity(){
 
     }
@@ -58,15 +64,11 @@ public class ProfileUserFragmentActivity extends Fragment {
         txtTipoAbogadoUser = view.findViewById(R.id.txtTipoAb_user);
         fotoPerfilUser = view.findViewById(R.id.fotoPerfilUser);
 
-        String userType = getArguments().getString("userType");
-        User user = (User) getArguments().getSerializable("user");
+        userType = getArguments().getString("userType");
+        user = (User) getArguments().getSerializable("user");
 
         if (!user.getPhotoUrl().isEmpty()){
-            Picasso.get()
-                    .load(user.getPhotoUrl())
-                    .error(R.drawable.user_icon)
-                    .centerCrop()
-                    .into(fotoPerfilUser);
+            firebaseService.downloadPhoto(fotoPerfilUser, user.getPhotoUrl());
         }
 
         txtNombreUser.setText("Nombre: " + user.getName());
@@ -103,6 +105,10 @@ public class ProfileUserFragmentActivity extends Fragment {
                     .load(imageUri)
                     .error(R.drawable.user_icon)
                     .into(fotoPerfilUser);
+
+            firebaseService.uploadPhoto(imageUri, user.getEmail(), userType);
         }
     }
+
+
 }
